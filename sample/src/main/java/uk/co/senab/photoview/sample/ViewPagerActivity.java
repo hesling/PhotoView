@@ -15,7 +15,6 @@
  *******************************************************************************/
 package uk.co.senab.photoview.sample;
 
-import uk.co.senab.photoview.PhotoView;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +26,10 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+
+import me.relex.circleindicator.CircleIndicator;
+import uk.co.senab.photoview.PhotoView;
 
 /**
  * Lock/Unlock button is added to the ActionBar.
@@ -42,16 +45,22 @@ public class ViewPagerActivity extends Activity {
 	
 	private ViewPager mViewPager;
 	private MenuItem menuLockItem;
+
+	private CircleIndicator indicator;
 	
     @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_view_pager);
         mViewPager = (HackyViewPager) findViewById(R.id.view_pager);
-		setContentView(mViewPager);
+		indicator = (CircleIndicator) findViewById(R.id.indicator_default);
+		//setContentView(mViewPager);
 
 		mViewPager.setAdapter(new SamplePagerAdapter());
-		
+		indicator.setViewPager(mViewPager);
+
 		if (savedInstanceState != null) {
 			boolean isLocked = savedInstanceState.getBoolean(ISLOCKED_ARG, false);
 			((HackyViewPager) mViewPager).setLocked(isLocked);
@@ -88,6 +97,8 @@ public class ViewPagerActivity extends Activity {
 		public boolean isViewFromObject(View view, Object object) {
 			return view == object;
 		}
+
+
 
 	}
 
